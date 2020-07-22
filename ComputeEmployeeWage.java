@@ -14,15 +14,23 @@ class CompanyEmpWage{
 	private int totalWorkingHours;
 	private int totalWorkingDays;
 	private int totalWage;
+	private ArrayList<Integer> dailyWage;
 
 	CompanyEmpWage(String companyName, int empWagePerHr, int totalWorkingHours, int totalWorkingDays){
 		this.COMPANY_NAME=companyName;
 		this.empWagePerHr=empWagePerHr;
 		this.totalWorkingHours=totalWorkingHours;
 		this.totalWorkingDays=totalWorkingDays;
+		dailyWage=new ArrayList<Integer>();
 	}
 
 	// Methods to read class variables
+	public String getCompanyName(){
+		return this.COMPANY_NAME;
+	}
+	public int getTotalWage(){
+		return this.totalWage;
+	}
 	public int getEmpWagePerHr(){
 		return this.empWagePerHr;
 	}
@@ -32,13 +40,19 @@ class CompanyEmpWage{
 	public int getNumWorkingDays(){
 		return this.totalWorkingDays;
 	}
+	public ArrayList<Integer> getDailyWage(){
+		return this.dailyWage;
+	}
 	public String toString(){
-		return this.COMPANY_NAME+" has "+this.totalWage+" as total wage.";
+		return this.getCompanyName()+" has "+this.getTotalWage()+" as total wage.";
 	}
 	
 	// Modifiers
 	public void setTotalWage(int totalWage){
 		this.totalWage=totalWage;
+	}
+	public void setDailyWage(int wage){
+		this.dailyWage.add(wage);
 	}
 	
 }
@@ -78,6 +92,10 @@ class ComputeEmployeeWage implements ComputeWage {
 		for(int emp=0 ; emp<companyWageArray.size();emp++)
 		{
 			companyWageArray.get(emp).setTotalWage(this.computeWage(companyWageArray.get(emp)));
+			for(int day=0;day<companyWageArray.get(emp).getDailyWage().size();day++)
+			{
+				System.out.println("\tDay "+(day+1)+"\t"+companyWageArray.get(emp).getDailyWage().get(day));
+			}
 			System.out.println(companyWageArray.get(emp));
 		}
 	}
@@ -89,7 +107,8 @@ class ComputeEmployeeWage implements ComputeWage {
 		int empHrs;
 		int totalWorkingDays=0;
 
-    	System.out.printf("%10s\t%20s\t%20s", "Day #", "Daily Wage", "Total Wage");
+    	System.out.printf("\n%10s\t%20s\t%20s", "Day #", "Daily Wage", "Total Wage");
+    	System.out.printf("\n%30s", "*\t"+companyWage.getCompanyName()+"\t*");
     	System.out.print('\n');
 		while(totalEmpHrs<companyWage.getMaxHrsPerMonth() && totalWorkingDays<companyWage.getNumWorkingDays())
 		{
@@ -97,6 +116,7 @@ class ComputeEmployeeWage implements ComputeWage {
 			empHrs = this.getWorkingHrs(this.employeeStatus());
 			totalEmpHrs+=empHrs;
 			System.out.format("%10d\t%20d\t%20d\n", totalWorkingDays, empHrs*companyWage.getEmpWagePerHr(), totalEmpHrs*companyWage.getEmpWagePerHr());
+			companyWage.setDailyWage(empHrs*companyWage.getEmpWagePerHr());
 
 		}
 		return totalEmpHrs*companyWage.getEmpWagePerHr(); 
