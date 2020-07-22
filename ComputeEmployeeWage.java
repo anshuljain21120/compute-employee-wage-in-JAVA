@@ -4,6 +4,7 @@ interface ComputeWage {
 
 	public void addCompanyDetails(String companyName, int empWagePerHr, int totalWorkingHours, int totalWorkingDays);
 	public void computeWage();
+	public void getTotalWage(String company);
 }
 
 class CompanyEmpWage{
@@ -60,16 +61,20 @@ class ComputeEmployeeWage implements ComputeWage {
 
 	public static final int IS_FULL_TIME=0; 
 	public static final int IS_PART_TIME=1;
-
-	// Using ArrayList already  
+  
 	ArrayList<CompanyEmpWage> companyWageArray ;
+	HashMap<String,CompanyEmpWage> totalWageOf;
 
 	public ComputeEmployeeWage(){
-		companyWageArray = new ArrayList<CompanyEmpWage>();
+		companyWageArray=new ArrayList<CompanyEmpWage>();
+		totalWageOf=new HashMap<String,CompanyEmpWage>(); 
 	}
 	
 	public void addCompanyDetails(String companyName, int empWagePerHr, int totalWorkingHours, int totalWorkingDays){
-		companyWageArray.add(new CompanyEmpWage(companyName,empWagePerHr,totalWorkingHours,totalWorkingDays));
+		
+		CompanyEmpWage companyDetails=new CompanyEmpWage(companyName,empWagePerHr,totalWorkingHours,totalWorkingDays);
+		companyWageArray.add(companyDetails);
+		totalWageOf.put(companyName, companyDetails);
 	}
 
 	private int employeeStatus() {
@@ -86,6 +91,11 @@ class ComputeEmployeeWage implements ComputeWage {
 		
 			default: return 0;
 		}
+	}
+
+	public void getTotalWage(String companyName){
+
+		System.out.println("[+Output]: Total Wage for "+companyName+" is:- "+totalWageOf.get(companyName).getTotalWage());
 	}
 	
 	public void computeWage(){
@@ -117,18 +127,21 @@ class ComputeEmployeeWage implements ComputeWage {
 			totalEmpHrs+=empHrs;
 			System.out.format("%10d\t%20d\t%20d\n", totalWorkingDays, empHrs*companyWage.getEmpWagePerHr(), totalEmpHrs*companyWage.getEmpWagePerHr());
 			companyWage.setDailyWage(empHrs*companyWage.getEmpWagePerHr());
-
 		}
 		return totalEmpHrs*companyWage.getEmpWagePerHr(); 
 	}
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to Employee Wage Program");
-		ComputeWage employeeWage = new ComputeEmployeeWage();
-		employeeWage.addCompanyDetails("Future Retail",20,100,20);
-		employeeWage.addCompanyDetails("Jio Mart",50,150,15);
+		ComputeWage employeeWage=new ComputeEmployeeWage();
 		employeeWage.addCompanyDetails("D-Mart",15,50,30);
+		employeeWage.addCompanyDetails("Wall Mart",50,150,15);
+		employeeWage.addCompanyDetails("Future Retail",20,100,20);
 		
 		employeeWage.computeWage();
+
+		employeeWage.getTotalWage("D-Mart");
+		employeeWage.getTotalWage("Wall Mart");
+		employeeWage.getTotalWage("Future Retail");
 	}
 }
