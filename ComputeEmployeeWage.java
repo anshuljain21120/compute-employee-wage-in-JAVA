@@ -46,6 +46,8 @@ class ComputeEmployeeWage implements ComputeWage {
 
 	public static final int IS_FULL_TIME=0; 
 	public static final int IS_PART_TIME=1;
+
+	// Using ArrayList already  
 	ArrayList<CompanyEmpWage> companyWageArray ;
 
 	public ComputeEmployeeWage(){
