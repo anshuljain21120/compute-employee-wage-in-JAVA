@@ -44,6 +44,7 @@ class CompanyEmpWage{
 	public ArrayList<Integer> getDailyWage(){
 		return this.dailyWage;
 	}
+	/* @Overloading Java util method*/
 	public String toString(){
 		return this.getCompanyName()+" has "+this.getTotalWage()+" as total wage.";
 	}
@@ -66,6 +67,7 @@ class ComputeEmployeeWage implements ComputeWage {
 	HashMap<String,CompanyEmpWage> totalWageOf;
 
 	public ComputeEmployeeWage(){
+		
 		companyWageArray=new ArrayList<CompanyEmpWage>();
 		totalWageOf=new HashMap<String,CompanyEmpWage>(); 
 	}
@@ -85,11 +87,17 @@ class ComputeEmployeeWage implements ComputeWage {
 	private int getWorkingHrs(int empStatus){
 		switch (empStatus)
 		{
-			case IS_PART_TIME: return 4;
+			case IS_PART_TIME:
+				// System.out.println("Part time employee");
+				return 4;
 			
-			case IS_FULL_TIME: return 8;
+			case IS_FULL_TIME: 
+				// System.out.println("Full time employee");
+				return 8;
 		
-			default: return 0;
+			default: 
+				// System.out.println("Employee Abscent");
+				return 0;
 		}
 	}
 
@@ -117,7 +125,7 @@ class ComputeEmployeeWage implements ComputeWage {
 		int empHrs;
 		int totalWorkingDays=0;
 
-    	System.out.printf("\n%10s\t%20s\t%20s", "Day #", "Daily Wage", "Total Wage");
+    	System.out.printf("\n%10s\t%15s\t%15s", "Day Number", "Daily Wage", "Total Wage");
     	System.out.printf("\n%30s", "*\t"+companyWage.getCompanyName()+"\t*");
     	System.out.print('\n');
 		while(totalEmpHrs<companyWage.getMaxHrsPerMonth() && totalWorkingDays<companyWage.getNumWorkingDays())
